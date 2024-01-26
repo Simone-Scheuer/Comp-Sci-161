@@ -1,0 +1,60 @@
+#************************************************************************************
+# Author:           Simone Scheuer
+# Assignment:       Assignment 1
+# Date:             1/17/2024
+# Description:      This program calculates how long it will take to make a dish and 
+#                   tells you when to begin making it to be done by a certain time.
+# Revisions:        A01 - initial assignment
+#************************************************************************************
+
+# Introduction and stylistic spacing.
+print("( ˘▽˘)っ♨!Dinner Party Calculator!┬─┬(◕‿◕♡)\n")
+
+# Define constant
+MINS_P_HOUR = 60
+
+# Define variables for user input
+dish_name = ""
+prep_time = ""
+cook_time = ""
+dp_hour = ""
+dp_min = ""
+
+# Define variables for calculations
+time_make = 0.0
+dp_time = 0
+latest_dp_mins = 0
+dp_hour_place = 0
+dp_min_place = 0
+hours_make = 0
+min_make = 0
+
+# Assign inputs to variables.
+dish_name = input("Please input your dish's name: ")
+prep_time = input("Please input prep time (min): ")
+cook_time = input("Please input cook time (min): ")
+dp_hour = input("Please input dinner party time (hour): ")
+dp_min = input("Please input your dinner party time (min):")
+print("\nThank you-! (ᇂ_Jᇂ ) Calculating… \n")
+
+# Calculate the time in minutes to make the dish.
+time_make = float(prep_time) + float(cook_time)
+# Calculate the time of the dinner party in minutes.
+dp_time = int(dp_hour) * MINS_P_HOUR + int(dp_min)
+# Subtract the time to make the dish from the dinner party time.
+latest_dp_mins = dp_time - int(time_make)
+# Convert the time at the latest from minutes to hours, and collect the remainder.
+dp_hour_place = (latest_dp_mins // MINS_P_HOUR) % 12
+dp_min_place = latest_dp_mins % MINS_P_HOUR
+# Repeat the process for the time to make.
+hours_make = int(time_make) // MINS_P_HOUR
+min_make = int(time_make) % MINS_P_HOUR
+
+# Print the variables within strings, spread out to four lines due to the lengths.
+output_line1 = f"{dish_name} will take {hours_make}:{min_make:02} to make!"
+output_line2 = f"You should start by {dp_hour_place}:{dp_min_place:02} at the latest"
+output_line3 = f"so you can finish by {dp_hour}:{dp_min:02}!"
+output_line4 = "Happy cooking! (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧"
+print(output_line1)
+print(output_line2, output_line3)
+print(output_line4)
