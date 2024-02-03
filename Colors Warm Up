@@ -1,0 +1,46 @@
+katmoji = '''
+  ╱|、
+(˚ˎ 。7  mreow
+ |、˜〵          
+ じしˍ,)ノ
+'''
+
+def main():
+    color1 = get_color()
+    color2 = get_color()
+    secondarycolor = mix_colors(color1, color2)
+    print_results(color1, color2, secondarycolor)
+
+
+def tilde_row():
+  print("~" * 30)
+
+
+def get_color():
+  color = input("Input a primary color: ")
+  return color
+
+
+def mix_colors(color1, color2):
+  secondarycolor = None 
+  if (color1 == 'red' and color2 == 'blue') or (color1 == 'blue' 
+                                                    and color2 == 'red'):
+    secondarycolor = 'purple'
+  elif (color1 == 'red' and color2 == 'yellow') or (color1 == 'yellow' 
+                                                    and color2 == 'red'):
+    secondarycolor = 'orange'
+  elif (color1 == 'yellow' and color2 == 'blue') or (color1 == 'blue' 
+                                                    and color2 == 'yellow'):
+    secondarycolor = 'green'
+  return secondarycolor
+
+
+def print_results(color1, color2, secondarycolor):
+    tilde_row()
+    print (f"{color1} + {color2} = {secondarycolor}".center(30))
+    print ("Happy painting! ".center(30))
+    print (katmoji)
+
+
+if __name__ == "__main__":
+    main()
