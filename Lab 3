@@ -1,0 +1,143 @@
+#*****************************************************************************
+# Partners:         Simone
+# Lab:              3: Convert Seconds
+# Description:      This program converts total seconds input by the
+#                   user into years, days, hours, minutes, and seconds, then 
+#                   prints the result in a readable format.
+# Notes:            Simone worked on this project solo as her scheduled 
+#                   lab partner no longer attends school, and her other 
+#                   group members already completed the project. 
+#                   Chatgpt helped Simone understand the logic and debug.
+#*****************************************************************************
+
+DAYS_YEAR = 365
+HOURS_DAY = 24
+MIN_HOUR = 60
+SEC_MIN = 60
+
+def main():
+    """
+    Main function that orchestrates the execution of the program.
+    param: None
+    :return: None
+    """
+    print_welcome()
+    print_tilde_row()
+    total_seconds = get_seconds()
+    (num_years, rem_days, rem_hours, 
+     rem_minutes, rem_seconds) = calc_time(total_seconds)
+    print_results(num_years, rem_days, rem_hours, 
+                  rem_minutes, rem_seconds, total_seconds)
+    print_goodbye()
+    print_katmoji()
+
+
+def print_welcome():
+    '''
+    Prints a welcome message.
+    param: None
+    :return: None
+    '''
+    print("Welcome to the second calculator!".center(40))
+
+
+def print_tilde_row():
+  print("˜" * 40)
+
+
+def get_seconds():
+    '''
+    Prompts for total number of seconds, and performs error handling.
+    param: None
+    :return: int: Positive integer of total seconds.
+    '''
+    while True:
+        try:
+            total_seconds = int(input("Please input total "
+            "number of seconds: "))
+            if total_seconds > 0:
+                return total_seconds
+            else:
+                print("Please input a number greater than zero.")
+        except ValueError:
+            print("That's not a valid number. Please enter an integer.")
+
+
+def calc_time(total_seconds):
+    '''
+    Converts total seconds to years, days, hours, minutes, and seconds.
+    param: total_seconds (int): Seconds to convert.
+    :returns: tuple: Years, days, hours, minutes, seconds.
+    '''
+    num_years = total_seconds // (DAYS_YEAR * HOURS_DAY * MIN_HOUR * SEC_MIN)
+    rem_seconds = total_seconds % (DAYS_YEAR * HOURS_DAY * MIN_HOUR * SEC_MIN)
+    rem_days = rem_seconds // (HOURS_DAY * MIN_HOUR * SEC_MIN)
+    rem_seconds %= (HOURS_DAY * MIN_HOUR * SEC_MIN)
+    rem_hours = rem_seconds // (MIN_HOUR * SEC_MIN)
+    rem_seconds %= (MIN_HOUR * SEC_MIN)
+    rem_minutes = rem_seconds // SEC_MIN
+    rem_seconds %= SEC_MIN
+    return (num_years, rem_days, rem_hours, rem_minutes, rem_seconds)
+
+
+def print_results(num_years, rem_days, rem_hours,
+                  rem_minutes, rem_seconds, total_seconds):
+    '''
+    Prints f-string conversion results from seconds.
+    :param num_years: int - Number of years.
+    :param rem_days: int - Number of remaining days.
+    :param rem_hours: int - Number of remaining hours.
+    :param rem_minutes: int - Number of remaining minutes.
+    :param rem_seconds: int - Number of remaining seconds.
+    :param total_seconds: int - Original total seconds
+    :return: None
+    '''
+    print(
+    f"\n{total_seconds} second{print_suffix(total_seconds)} equals:\n")
+
+    if num_years > 0:
+     print(f"{num_years} Year{print_suffix(num_years)}")
+    if rem_days > 0:
+     print(f"{rem_days} Day{print_suffix(rem_days)}")
+    if rem_hours > 0:
+     print(f"{rem_hours} Hour{print_suffix(rem_hours)}")
+    if rem_minutes > 0:
+     print(f"{rem_minutes} Minute{print_suffix(rem_minutes)}")
+    if rem_seconds > 0:
+     print(f"{rem_seconds} Second{print_suffix(rem_seconds)}")
+
+
+def print_suffix(value):
+    '''
+    Returns 's' for plural units, otherwise empty string.
+    param: value (int): Unit quantity.
+    :return: str: 's' for plural or '' for singular.
+    '''
+    return 's' if value != 1 else ''
+
+
+def print_goodbye():
+    '''
+    Prints a goodbye message.
+    param: None
+    :return: None
+    '''
+    print("\nThanks for playing!")
+
+
+def print_katmoji():
+  '''
+  Prints adorable kitty.
+  param: None
+  :return: None
+  '''
+  print(r'''
+    ╱|、
+  (˚ˎ 。7  mreow
+   |、˜〵          
+   じしˍ,)ノ
+  ''')
+
+
+if __name__ == "__main__":
+    main()
