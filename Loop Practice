@@ -1,0 +1,22 @@
+def main():
+  num = 0
+  sum = 0
+  count = 0
+  avg = 0.0
+
+  num = int(input("Enter a positive integer: "))
+  while num > 0:
+      count += 1
+      sum = sum + num
+      num = int(input("Enter a positive integer: "))
+
+  if count > 0:
+    avg = sum / count
+    print(f"\nYou entered {count} positive integers")
+    print(f"Sum: {sum}")
+    print(f"Average: {avg}")
+  else:
+    print("No numbers entered.")
+  
+if __name__ == "__main__":
+  main()
