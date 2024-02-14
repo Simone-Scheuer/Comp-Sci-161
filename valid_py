@@ -1,0 +1,21 @@
+import valid as v
+
+def main():
+  age = 0
+  num = 0
+  cost = 0.0
+  name = ""
+
+  age = v.get_integer("Enter your age: ")
+  print("You are", age, "years old.\n")
+  
+  num = v.get_integer()
+  print("You entered", num, "\n")
+  
+  cost = v.get_float("Enter the cost of your meal $ ")
+  print("Your meal was ${:.2f}\n".format(cost))
+  
+  name = v.get_string("Enter your name: ")
+  print("Hello, ", name, "!\n", sep='')
+
+main()
