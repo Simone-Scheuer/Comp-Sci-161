@@ -1,0 +1,222 @@
+#*****************************************************************************
+# Partners:         Melina Jacklet and Simone Scheuer
+#
+# Lab:              4
+#
+# Description:      Calculates various statistical measures 
+#                   from user-entered numbers.
+#
+# Notes:            We worked on the planning doc and code together in 
+#                   person. We used ChatGPT to debug and learn formatting
+#                   techniques. 
+#
+#*****************************************************************************
+
+def main():
+  print_title()
+  cont = 'y'
+  sum = 0.0
+  count = 0
+  min_value = 0.0
+  max_value = 0.0
+  avg = 0.0
+  range = 0.0
+  neg_count = 0
+  percent_neg = 0.0
+
+  while cont == 'y':
+      num = get_num()
+      min_value = calc_min(num, min_value, count)
+      max_value = calc_max(num, max_value, count)
+      sum = calc_sum(num, sum)
+      count = calc_count(count)
+      neg_count = calc_neg_count(num, neg_count)
+      cont = get_cont(count)
+
+  avg = calc_avg(sum, count)
+  range = calc_range(max_value, min_value)
+  percent_neg = calc_percent_neg(neg_count, count)
+  tilde_row()
+  print_results(count, sum, avg, min_value, max_value, range, percent_neg)
+
+
+def print_title():
+  '''
+  Prints a fun title to the user
+  :param: none
+  :return: none
+  '''
+  print (r'''
+______________________________
+| ____  ____  __  ____  ____ |
+|/ ___)(_  _)/ _\(_  _)/ ___)|
+|\___ \  )( /    \ )(  \___ \|
+|(____/ (__)\_/\_/(__) (____/|
+|____________________________|
+  ''')
+
+
+def get_num():
+  '''
+  Prompts and returns a number to crunch
+  :param: none
+  :return: the user-entered number, float
+  '''
+  num = 0.0
+  num = int(input(" Enter a number, any number: ")) 
+  return num
+
+
+def calc_count(count):
+  '''
+  Increments the count of numbers entered
+  :param count: ongoing count of all inputs, integer
+  :return: incremented count of all inputs, integer
+  '''
+  count += 1 
+  return count
+
+
+def calc_neg_count(num, neg_count):
+  '''
+  Calculates the amount of negative numbers.
+  :param num: user-entered number, float
+  :param neg_count: ongoing count of negative numbers, integer
+  :return: ongoing count of negative numbers, integer
+  '''
+  if num < 0:
+       neg_count += 1
+  return neg_count
+
+
+def get_cont(count):
+  '''
+  Prompts and returns a character to continue or not. 
+  Prints cheeky comments at certain counts.
+  :param count: ongoing counts of numbers inputed, integer
+  :return: the user-entered continuation character, string
+  '''
+  cont = input("       Continue? (y/n): ").lower()
+  if cont == 'y' and count == 5:
+    print("Wow, you've entered a lot of numbers!")
+  if count == 8:
+    print('You must be sick of entering "y" by now...')
+  return cont 
+
+
+def calc_min(num, min_value, count):
+  '''
+  Tracks and updates the minimum observed value
+  :param num: the user-entered number, float
+  :param min_value: the current minumum value, float
+  :param count: ongoing counts of numbers inputed, integer
+  :return: the current minumum value, float
+  '''
+  if count == 0 or num < min_value:
+       min_value = num
+  return min_value
+
+
+def calc_max(num, max_value, count):
+  '''
+  Tracks and updates the maximum observed value
+  :param num: the user-entered number, float
+  :param min_value: the current maximum value, float
+  :param count: ongoing counts of numbers inputed, integer
+  :return: the current maximum value, float
+  '''
+  if count == 0 or num > max_value:
+      max_value = num
+  return max_value
+
+
+def calc_sum(num, sum):
+  '''
+  Calculates the sum of all numbers entered
+  :param num: the user-entered number, float
+  :param sum: the ongoing sum of user-entered values, float
+  :return: the current sum, float
+  '''
+  sum += num
+  return sum
+
+
+def calc_avg(total_sum, count):
+  '''
+  Calculates the average of all numbers entered
+  :param total_sum: the user-entered number, float
+  :param count: the ongoing sum of user-entered values, float
+  :return: the current sum, float
+  '''
+  if count > 0: 
+      avg = total_sum / count 
+      return avg 
+  else:
+      return 0 
+
+
+def calc_range(max_value, min_value):
+  '''
+  Calculates the range of all numbers entered
+  :param max_value: the maximum user-entered number, float
+  :param min_value: the minimum user-entered number, float
+  :return: the range of user-entered numbers, float
+  '''
+  range = 0.0
+  range = max_value - min_value
+  return range
+
+
+def calc_percent_neg(neg_count, count):
+  '''
+  Calculates the percent of negative numbers in the list of numbers
+  :param: neg_count, int, the count of negative numbers
+  :param: count, the total amount of numbers
+  :return: Percent_neg, float, returns the ratio of negative numbers
+  '''
+  percent_neg = neg_count / count * 100
+  return percent_neg
+
+
+def print_results(count, sum, avg, min_value, max_value, range, percent_neg):
+  '''
+  Prints f strings containing all of the final results compiled
+  :param count: The tracked quantity of user inputs, integer
+  :param sum: The tracked sum of user inputs, float
+  :param avg: The tracked avgerage of user inputs, float
+  :param min_value: The tracked smallest value of user inputs, float
+  :param max_value: The tracked largest value of user inputs, float
+  :param range: The maximum minus the minimum, float
+  :param percent_neg: The percentage of negative values, float
+  :return: None
+  '''
+  if count > 1:
+    print(f"    You input {count} numbers!".center(31))
+    if percent_neg == 0.0:
+      print("You only entered positive numbers.")
+    elif percent_neg == 100:
+      print("Not a single one was positive.")
+    else:
+      print(f"  {percent_neg:.03}% of them were negative.")
+  else:
+    print("You only entered one number!".center(31))
+    print("Do you even need a calculator?")
+
+  print(f"Sum: {sum}".center(31))
+  print(f"Average: {avg:.03}".center(31))
+  print(f"Min: {min_value}".center(31))
+  print(f"Max: {max_value}".center(31)) 
+  print(f"Range: {range}".center(31))
+
+
+def tilde_row():
+  '''
+  Prints a row of tildes.
+  :param None
+  :retu rn: None
+  '''
+  print(" ")
+  print("~" * 31)
+  print(" ")
+
+main()
