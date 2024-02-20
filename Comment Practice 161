@@ -1,0 +1,19 @@
+bpm = 0
+avg_bpm = 0
+sum_bpm = 0
+count_bpms = 0
+# Set all relevant variables to zero.
+while bpm >= 0:
+# Create a while loop based on negative sentinels
+  bpm = int(input("Input your bpm: "))
+# Collect data and connect to a variable
+  sum_bpm += bpm
+# Update a sum based on input data
+  count_bpms += 1
+# Iterate a count each loop to track inputs
+avg_bpm = sum_bpm / count_bpms
+# Average using the sum and count of inputs
+print(f"Based on {count_bpms} data points your avg bpm was {avg_bpm}")
+# Print an f string with the output data
+  
+  
