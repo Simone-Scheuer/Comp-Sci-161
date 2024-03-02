@@ -1,0 +1,334 @@
+import val as v
+#*****************************************************************************
+# Author:      Simone Scheuer
+# Assignment:  Assignment 4
+# Date:        2/23/2024
+# Description: This program calculates how long a dish will take and then
+#              tells you when to begin making it to be done by a certain time.
+#              It has been refactored to use input verification.
+# Revisions:   AO4 - first assignment A01 - second assignment AO2 third-Ao3
+#*****************************************************************************
+
+MINUTES_PER_HOUR = 60
+ADD_DISH = 1
+PRINT_LIST = 2
+QUIT = 3
+MIN_HOURS = 1
+MAX_HOURS = 12
+CENTER = 42
+MAX_MINS = 60
+
+
+def main():
+    """
+    Main function to run the Dinner Party Calculator.
+    :param: none
+    :return: none
+    """
+    dish_names = []
+    prep_times = []
+    cook_times = []
+    time_totals = []
+    dish_count = 0  
+    dp_hour, dp_min = 0, 0  
+    print_intro()
+    dp_hour = get_hour()
+    dp_min = get_min() 
+    loop_true = True
+    total_total_mins = 0
+    while  loop_true:
+        print_menu()
+        choice = get_menu_choice()
+
+        if choice == ADD_DISH:
+            total_minutes, dish_name, prep_time, cook_time = run_dinner_party_calculator()
+            dish_count += 1
+            cook_times.append(cook_time)
+            prep_times.append(prep_time)
+            dish_names.append(dish_name)
+            time_totals.append(total_minutes)
+            total_total_mins += total_minutes
+          
+        elif choice == PRINT_LIST:
+          print_list(cook_times,prep_times,dish_names)
+
+        elif choice == QUIT:
+            if dish_count > 0:
+                print_summary(dish_count, total_total_mins, dp_hour, dp_min, dish_names)
+            print("Happy Cooking! (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧\n".center(CENTER))
+            print_pie()
+            loop_true = False
+        else:
+            print("That's not a valid option. Please try again!")
+
+
+def print_menu():
+    """
+    Prints the menu.
+    :param: none
+    :return: none
+    """
+    print_tildas()
+    print("Menu:".center(CENTER))
+    print(f"{ADD_DISH}.Make Dish".center(CENTER))
+    print(f"{PRINT_LIST}.Print List".center(CENTER))
+    print(f"{QUIT}.Calculate".center(CENTER))
+
+
+def get_menu_choice():
+    """
+    Collects the menu choice.
+    :param: none
+    :return: choice (int)
+    """
+    choice = v.get_integer("          Enter your menu choice: ")
+    while choice < ADD_DISH or choice > QUIT:
+      choice = v.get_integer("          Enter valid menu choice: ")
+    print_tildas()
+    return choice
+
+
+def run_dinner_party_calculator():
+    """
+    Collects the menu choice.
+    :param: None
+    :return: total_minutes (int), dish_name (string)
+    """
+    dish_name = get_dish()
+    prep_time = get_prep()  
+    cook_time = get_cook()
+    total_minutes = calc_total_minutes(prep_time, cook_time)
+    print_final_messages(dish_name, total_minutes)
+    return total_minutes, dish_name, prep_time, cook_time
+
+def print_list(cook_times,prep_times,dish_names):
+  """
+  Prints all of the books entered in a table format
+  :param book_title_list: string, list of book titles
+  :param total_pages_list: integer, list of total pages
+  :param pages_read_list: integer, list of pages read
+  :return: none
+  """
+  index = 0    
+  if len(dish_names) == 0:
+    print("No dishes silly!")
+  else:
+    print("Dish Name  Prep Time  Cook Time  Total Mins ")
+    print("---------  ---------  ---------  ----------  ")
+    while index < len(dish_names):
+      time_total = prep_times[index] + cook_times[index]
+      print(f"{dish_names[index]: <12} {prep_times[index]: <10}", 
+            f"{cook_times[index]: <10} {time_total: <10}")
+      index += 1
+
+  
+def print_tildas():
+  """
+  Prints a row of tildas.
+  :param: none
+  :return: none
+  """
+  print("~" * 43)
+
+
+def print_pie():
+  """
+  Prints a ASCII pie.
+  :param: none
+  :return: none
+  """
+  print (r'''
+
+                     (
+                      )
+                 __..---..__
+             ,-='  /  |  \  `=-.
+            :--..___________..--;
+             \.,_____________,./
+
+  ''')
+
+
+def print_intro():
+    """
+    Prints introduction message.
+    :param: none
+    :return: none
+    """
+    print_tildas()
+    print("( ˘▽˘)っ♨!Dinner Party Calculator!┬─┬(◕‿◕♡)".center(CENTER))
+    print_tildas()
+
+
+def get_dish():
+    """
+    Prompts user for dish name.
+    :param: none
+    :return: dish name (string)
+    """
+    dish = input("    Please input the dish's name: ")
+    while dish == '':
+      dish = input("    Please input a non empty name: ")
+    return dish
+
+
+def get_prep():
+    """
+    Prompts user for prep time.
+    :param: none
+    :return: prep time (int)
+    """
+    prep = v.get_integer("    Please input prep time (min): ")
+    while prep < 0:
+      prep = v.get_integer("    Please input non negative time (min): ")
+    return prep
+
+
+def get_cook():
+    """
+    Prompts user for cook time.
+    :param: none
+    :return: cook time (int)
+    """
+    cook = v.get_integer("    Please input cook time (min): ")
+    while cook < 0:
+      cook = v.get_integer("    Please input non negative time (min): ")
+    return cook
+
+
+def get_hour():
+    """
+    Prompts user for dinner party hour.
+    :param: none
+    :return: dp_hour (int)
+    """
+    hour = v.get_integer("    Please input party time (hour): ")
+    while hour < MIN_HOURS or hour > MAX_HOURS:
+      hour = v.get_integer("    Please input valid time (hour): ")
+    return hour
+
+def get_min():
+    """
+    Prompts user for dinner party minute.
+    :param: none
+    :return: dp_min (int)
+    """
+    min = v.get_integer("    Please Input party time (mins): ")
+    while min < MIN_HOURS or min > MAX_MINS:
+      min = v.get_integer("    Please Input valid time (mins): ")
+    return min
+
+
+def calc_total_minutes(prep_time, cook_time):
+    """
+    Calculates total minutes to make the dish.
+    :param prep_time: prep time (int)
+    :param cook_time: cook time (int)
+    :return: total minutes (int)
+    """
+    return prep_time + cook_time
+
+
+def calc_dinner_party_minutes(dp_hour, dp_min):
+    """
+    Calculates total dinner party minutes.
+    :param dp_hour: dinner party hour (int)
+    :param dp_min: dinner party minute (int)
+    :return: dinner party minutes (int)
+    """
+    return dp_hour * MINUTES_PER_HOUR + dp_min
+
+
+def calc_latest_time(total_minutes, dp_minutes):
+    """
+    Calculates the latest time to start making the dish.
+    :param total_minutes: total minutes to make the dish (int)
+    :param dp_minutes: total dinner party minutes (int)
+    :return: latest start time in minutes (int)
+    """
+    return dp_minutes - total_minutes
+
+
+def calc_convert_minutes_to_hours(mins_latest):
+    """
+    Collects the hour part from the latest start time.
+    :param mins_latest: latest start time in minutes (int)
+    :return: hour part (int)
+    """
+    return mins_latest // MINUTES_PER_HOUR
+
+
+def calc_convert_minutes_to_minutes(mins_latest):
+    """
+    Collects the minute part from the latest start time.
+    :param mins_latest: latest start time in minutes (int)
+    :return: minute part (int)
+    """
+    return mins_latest % MINUTES_PER_HOUR
+
+
+def make_hour_place(total_minutes):
+    """
+    Calculates the hour place of time to make.
+
+    :param total_minutes: Total mins to make the dish in minutes (int)
+    :return: The hour component of the total time (int)
+    """
+    make_hour = total_minutes // MINUTES_PER_HOUR
+    return make_hour
+
+
+def make_minute_place(total_minutes):
+  """
+  Calculates the minute place of the time to make.
+
+  :param total_minutes: Total time to make the dish in minutes (int)
+  :return: The minute component of the total time (int)
+  """
+  make_minute = total_minutes % MINUTES_PER_HOUR
+  return make_minute
+
+
+def print_final_messages(dish_name,total_minutes):
+    """
+    Prints final messages.
+    :param dish_name: name of the dish (string)
+    :param total_minutes: total time to make the dish (int)
+    :return: none
+    """
+    make_hour = make_hour_place(total_minutes)
+    make_minute = make_minute_place(total_minutes)
+
+    print(f"{dish_name} will take {make_hour} hours, "
+          f"{make_minute:02} minutes!".center(CENTER))
+
+
+def print_summary(dish_count, total_total_mins, dp_hour, dp_min, dish_names):
+  """
+  Prints the total summary
+  :param dish_count: the amount of dishes so far (int)
+  :param dish_names: the names of all the dishes (list)
+  :param dp_hour: the hour of the dinner party
+  :param dp_min: the min of the dinner party
+  :param total_total_mins: the total sum of all minutes combined.
+  returns: None
+  """
+  total_hours, total_mins = divmod(total_total_mins, MINUTES_PER_HOUR)
+  dp_total_mins = dp_hour * MINUTES_PER_HOUR + dp_min
+  start_total_mins = dp_total_mins - total_total_mins
+  start_hour, start_min = divmod(start_total_mins, MINUTES_PER_HOUR)
+  dish_text = 'dish' if dish_count == 1 else 'dishes'
+  print("Summary:".center(CENTER))
+  print(f"You've planned {dish_count} {dish_text}!".center(CENTER))
+  print(f"For a total of "
+  f"{total_hours} hour(s), {total_mins} minute(s).".center(CENTER))
+  print(f"Start by {start_hour}:{start_min:02} to finish by "
+      f"{dp_hour}:{dp_min:02}.".center(CENTER))
+  if dish_count > 1:
+        print("Dishes to prepare:".center(CENTER))
+        print(f"{dish_names}".center(CENTER))
+
+
+if __name__ == "__main__":
+    main()  
+
