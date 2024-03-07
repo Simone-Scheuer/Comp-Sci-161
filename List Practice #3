@@ -1,0 +1,22 @@
+
+planets = ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", 
+   "Uranus", "Neptune"]
+rings = [False, False, False, False, True, True, True, True]
+
+def main():
+  planet_name = input("enter name: ")
+  has_rings(planets, rings, planet_name)
+
+
+def has_rings(planets, rings, planet_name):
+  i = 0
+  result = None
+  while i < len(planets):
+    if planets[i] == planet_name:
+      result = rings[i]
+      break
+    else:
+     i += 1
+  print(result)
+main()
+
