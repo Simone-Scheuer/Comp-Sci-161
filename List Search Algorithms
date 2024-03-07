@@ -1,0 +1,120 @@
+import random
+
+def main():
+  nums = [3, 10, 5, 7, 3] # create an empty list, change to test
+                          # different scenarios
+  value = 5 # update to test different scenarios
+  index = 0
+
+  print(nums, "\n")
+
+  # is is value in the list?
+  if in_list(nums, value):
+    print(f"{value} is in the list.")
+  else:
+    print(f"{value} is not in the list.")
+
+  # find the index of where value is in the list
+  index = find_index(nums, value)
+  if index == -1:
+    print(f"{value} is not in the list.")
+  else:
+    print(f"{value} is at index {index}.")
+
+  # does the list have duplicates
+  if has_duplicates(nums):
+    print("There are duplicates in the list.")
+  else:
+    print("There are no duplicates in the list.")
+
+  # is the list in ascending order?
+  if is_ascending(nums):
+    print("The list is in ascending order.")
+  else:
+    print("The list is not in ascending order.")
+
+
+
+def in_list(nums, value):
+  '''
+  Iterate through the nums list and look for value
+  :param nums: list of integers
+  :param value: value to look for, integer
+  :return: True if value is in nums, False otherwise
+  '''
+  i = 0
+  found = False
+  while i < len(nums):
+    if nums[i] == value:
+      found = True
+    i += 1
+  return found
+
+
+def find_index(nums, value):
+  '''
+  Iterate through the nums list and look for value
+  :param nums: list of integers
+  :param value: value to look for, integer
+  :return: index of where value is in nums, -1 if not in list
+  '''
+  i = 0
+  index = -1
+  while i < len(nums):
+    if nums[i] == value:
+      index = i
+    i += 1
+  return index
+
+
+def has_duplicates(nums):
+  '''
+  Determines if the nums list has duplicates
+  :param nums: list of integers
+  :return: True if there are duplicates, False otherwise
+  '''
+  # [1, 2, 3, 4, 5]
+  # [1, 2, 3, 2, 5]
+  i = 0
+  num = 0
+  duplicates = False
+  while i < len(nums):
+    num = nums[i]
+    while i < len(nums):
+      if num == nums[i]:
+        duplicates = True
+      i += 1
+    i += 1
+  return duplicates
+  # assume no duplicates
+  # loop through list from index 0 to < length of list - 1
+  #   get element at index
+  #   loop through list from index + 1 to < length of list
+  #       if the elements are equal 
+  #            list has duplicates!
+  # return if it has duplicates.
+
+
+def is_ascending(nums):
+  '''
+  Determines if the nums list is in ascending order
+  1, 4, 5, 10, 33 is ascending, 1, 4, 2, 10, 33 is not
+  :param nums: list of integers
+  :return: True if list is in ascending order, False otherwise
+  '''
+  # [1, 2, 3, 4, 5]
+  # [1, 2, 1, 4, 5]
+  # assume it is ascending
+  # loop from 0 to < length of list - 1
+  #    if next cell is <= prev cell
+  #        not ascending
+  # return result
+  i = 0
+  ascending = True
+  while i < len(nums) - 1 and ascending:
+         if nums[i] > nums[i+1]:
+             ascending = False
+         i += 1
+  return ascending
+  
+main()
