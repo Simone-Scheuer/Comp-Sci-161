@@ -1,0 +1,164 @@
+import list as l
+import valid as v
+
+#*****************************************************************************
+# Partners:         Melina Jacklet and Simone Scheuer
+#
+# Lab:              07- fun with statistics 2
+#
+# Description:      Calculates various statistical measures from user-entered
+#                   numbers. Updated to use lists and outsource to modules.
+#
+# Notes:            We worked on the code together in a silly library.
+#                   person. We used ChatGPT to debug and learn formatting
+#                   techniques, as well as to verify style.
+#
+#*****************************************************************************
+
+
+def main():
+  '''
+  is the main function, executes the rest of the program.
+  :param: none
+  :return: none
+  '''
+  cont = 'y'
+  sum = 0.0
+  count = 0
+  min = 0.0
+  max = 0.0
+  avg = 0.0
+  range = 0.0
+  percent_neg = 0.0
+  num_list = []
+
+  print_title()
+  
+  while cont == 'y':
+      num_list.append(get_num())
+      cont = get_cont()
+  count, min, max, range, sum, avg, percent_neg = calc_everything(num_list)
+  tilde_row()
+  print_results(count, min, max, range, sum, avg, percent_neg)
+  
+    
+def print_title():
+  '''
+  Prints a fun title to the user
+  :param: none
+  :return: none
+  '''
+  print (r'''
+______________________________
+| ____  ____  __  ____  ____ |
+|/ ___)(_  _)/ _\(_  _)/ ___)|
+|\___ \  )( /    \ )(  \___ \|
+|(____/ (__)\_/\_/(__) (____/|
+|____________________________|
+  ''')
+
+
+def get_num():
+  '''
+  Prompts and returns a number to crunch
+  :param: none
+  :return: the user-entered number, float
+  '''
+  num = 0.0
+  num = v.get_float("Enter a number, any number: ")
+  return num
+
+
+def get_cont():
+  '''
+  Prompts and returns a character to continue or not. 
+  Prints cheeky comments at certain counts.
+  :param count: ongoing counts of numbers inputed, integer
+  :return: the user-entered continuation character, string
+  '''
+  cont = ""
+  cont = input("       Continue? (y/n): ").lower()
+  while cont != 'y' and cont != 'n':
+    print("Invalid input")
+    cont = input("       Continue? (y/n): ").lower()
+  return cont 
+
+
+def calc_everything(num_list):
+  '''
+  Calls to and executes all of the calculation functions from the list module.
+  :param: num_list: list of floats, all collected numbers
+  :return: 
+  count: integer, count of numbers in num_list
+  min: float, minimum value in num_list
+  max: float, maximum value in num_list
+  range: float, range of values in num_list
+  sum: float, sum of all values in num_list
+  avg: float, average of all values in num_list
+  percent_neg: float, percentage of negative numbers in num_list
+  '''
+  count = 0
+  neg_count = 0
+  sum = 0.0
+  min = 0.0
+  max = 0.0
+  range = 0.0
+  sum = 0.0
+  avg = 0.0
+  percent_neg = 0.0
+  
+  min = l.calc_min(num_list)
+  max = l.calc_max(num_list)
+  count = l.calc_count(num_list)
+  neg_count = l.calc_neg_count(num_list)
+  range = l.calc_range(max, min)
+  sum = l.calc_sum(num_list)
+  avg = l.calc_avg(sum, count)
+  percent_neg = l.calc_percent_neg(neg_count, count)
+
+  return count, min, max, range, sum, avg, percent_neg
+  
+
+def print_results(count, min_value, max_value, range, sum, avg, percent_neg):
+  '''
+  Prints f strings containing all of the final results compiled
+  :param count: The tracked quantity of user inputs, integer
+  :param sum: The tracked sum of user inputs, float
+  :param avg: The tracked avgerage of user inputs, float
+  :param min_value: The tracked smallest value of user inputs, float
+  :param max_value: The tracked largest value of user inputs, float
+  :param range: The maximum minus the minimum, float
+  :param percent_neg: The percentage of negative values, float
+  :return: None
+  '''
+  if count > 1:
+    print(f"  You input {count} numbers!".center(31))
+    if percent_neg == 0.0:
+      print("You only entered positive numbers.")
+    elif percent_neg == 100:
+      print("Not a single one was positive.")
+    else:
+      print(f"  {percent_neg:.03}% of them were negative.")
+  else:
+    print("You only entered one number!")
+    print("Did you even need a calculator?")
+
+  print(f"Sum: {sum}".center(31))
+  print(f"Average: {avg:.03}".center(31))
+  print(f"Min: {min_value}".center(31))
+  print(f"Max: {max_value}".center(31)) 
+  print(f"Range: {range}".center(31))
+
+
+def tilde_row():
+  '''
+  Prints a row of tildes.
+  :param None
+  :retu rn: None
+  '''
+  print(" ")
+  print("~" * 31)
+  print(" ")
+
+
+main()
