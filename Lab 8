@@ -1,0 +1,186 @@
+import valid as v
+
+#*****************************************************************************
+# Partners:         Melina Jacklet and Simone Scheuer
+# Lab:              L08
+# Description:      This program intakes pet types and votes for that type
+#                   appends them to lists and then calculates and formats
+#                   statistics about the values.
+#  Notes:           We sat together and coded simultaneously, splitting the
+#                   formatting and planning pretty equally, we used chatgpt
+#                   to debug strange situations and to approve our
+#                   final product, overall, it was a good lab.
+#*****************************************************************************
+
+YES = 'y'
+NO = 'n'
+
+
+def main():
+  '''
+  Is the main function of the program
+  :param: None
+  :return None
+  '''
+  pet_type = []
+  num_votes = []
+  yes_no = YES
+  total_votes = 0
+  percent = []
+  fav_pet = ''
+  i = 0
+
+  print_title()
+  while yes_no == YES:
+    pet_type = get_pet_type(pet_type)
+    num_votes = get_num_votes(num_votes, pet_type[i])
+    yes_no = get_yes_no()
+    i += 1
+
+  total_votes = calc_total_votes(num_votes)
+  percent = calc_percent(num_votes, total_votes)
+  fav_pet = calc_fav_pet(num_votes, pet_type)
+  least_fav_pet = calc_least_fav_pet(num_votes, pet_type)
+
+  print_results(pet_type, num_votes, percent, fav_pet, least_fav_pet)
+
+
+def print_title():
+  '''
+  Prints the title and instructions
+  :param: None
+  :return: None
+  '''
+  print("Favorite Pet Distribution\n")
+  print("Poll your friends and ask for their favorite type of pet!\n")
+
+
+def get_pet_type(list):
+  '''
+  Collects input for pet type and appends it to the list
+  :param list: the ongoing list of pet types, list of strings
+  :return: updated with pet type, list of strings
+  '''
+  list.append(input("Enter Pet Type: "))
+  return list
+
+
+def get_num_votes(num_votes, pet_type):
+  '''
+  Collects input for vote number and appends it to the list
+  :param num_votes: the ongoing list of number of votes, list of integers
+  :param pet_type: list of pet types, list of strings
+  :return: updated with the number of votes, list of integers
+  '''
+  vote_count = v.get_integer(f"How many friends listed {pet_type} " +
+                             "as their favorite?: ")
+  while vote_count < 0:
+    print("Invalid input. Number of votes must be positive.")
+    vote_count = v.get_integer(f"How many friends listed {pet_type} " +
+                               "as their favorite?: ")
+  num_votes.append(vote_count)
+  return num_votes
+
+
+def get_yes_no():
+  '''
+  Collects, validates, and returns a yes or no character
+  :param yes_no: the string containing a y or n character, string
+  :return: the continuation character
+  '''
+  yes_no = input("More Pets? (y/n): ").lower()
+  while yes_no != YES and yes_no != NO:
+    print('Invalid input. You must enter "y" or "n".')
+    yes_no = input("More Pets? (y/n): ").lower()
+  return yes_no
+
+
+def calc_total_votes(list):
+  '''
+  Calculates the total number of votes across at pet types
+  :param list: list of the number of votes, list of integers
+  :return: the sum of all votes, integer
+  '''
+  i = 0
+  total_votes = 0
+  while i < len(list):
+    total_votes += list[i]
+    i += 1
+  return total_votes
+
+
+def calc_percent(list, total_votes):
+  '''
+  Calculates and appends the percent of total votes that each pet type got
+  :param list: list of the number of votes, list of integers
+  :param total_votes: the sum of all votes, integer
+  :return: list of various percent values, list of floats
+  '''
+  i = 0
+  percent = []
+  while i < len(list):
+    percent.append(list[i] / total_votes * 100)
+    i += 1
+  return percent
+
+
+def calc_fav_pet(num_votes, pet_type):
+  '''
+    Calculates the most voted pet
+    :param num_votes: list of number of votes, list of nums
+    :param pet_type: list of pet types, list of strings
+    :return: the pet at the index position of the highest votes, string
+    '''
+  max_votes = num_votes[0]
+  fav_pet = pet_type[0]
+  i = 1
+  while i < len(num_votes):
+    if num_votes[i] > max_votes:
+      max_votes = num_votes[i]
+      fav_pet = pet_type[i]
+    i += 1
+  return fav_pet
+
+
+def calc_least_fav_pet(num_votes, pet_type):
+  '''
+  Calculates the least voted pet
+  :param num_votes: list of number of votes, list of nums
+  :param pet_type: list of pet types, list of strings
+  :return: the pet at the index position of the lowest votes, string
+  '''
+  min_votes = num_votes[0]
+  least_fav_pet = pet_type[0]
+  i = 1
+  while i < len(num_votes):
+    if num_votes[i] < min_votes:
+      min_votes = num_votes[i]
+      least_fav_pet = pet_type[i]
+    i += 1
+  return least_fav_pet
+
+
+def print_results(pet_type, num_votes, percent, fav_pet, least_fav_pet):
+  '''
+  Prints the results in a formatted table
+  :param pet_type: pet types, list of strings
+  :param num_votes: number of votes, list of nums
+  :param percent: percent of toal votes for each pet type, list of strings
+  :param fav_pet: the pet with the highest votes, string
+  :param least_fav_pet: the pet with the lowest votes, string
+  :return: None
+  '''
+  print("\nFavorite Pet Distribution")
+  print("Pet   # Favorites  % Favorite  Bar Chart")
+  print("-" * 69)
+  i = 0
+  while i < len(pet_type):
+    bar_chart = '*' * int(percent[i] / 10)
+    print(f"{pet_type[i]:<10} {num_votes[i]:<10} " +
+          f"{percent[i]:<10.2f} {bar_chart}")
+    i += 1
+  print(f'The most popular pet is {fav_pet} ' +
+        f'and the least popular pet is {least_fav_pet}.')
+
+
+main()
